@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-custom fixed-top">
@@ -22,9 +23,9 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="chatNavbar">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link active" href="/">
+              <Link className="nav-link active" to="/home">
                 Home
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/features">
@@ -35,12 +36,12 @@ function Navbar() {
 
           {/* Auth Buttons */}
           <div className="d-flex gap-2">
-            <a href="/signin" className="btn btn-outline-primary px-4">
+            <Link to ="/sign-up" className="btn btn-outline-primary px-4">
               Sign In
-            </a>
-            <a href="/signup" className="btn btn-primary px-4">
+            </Link>
+            <Link to ="/sign-up" className="btn btn-primary px-4">
               Sign Up
-            </a>
+            </Link>
           </div>
         </div>
 

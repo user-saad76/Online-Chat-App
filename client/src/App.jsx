@@ -1,17 +1,23 @@
 
 import './App.css'
-import Dashboard from './Components/Dashboard'
-import Navbar from './Components/Navbar'
+import Home from './Pages/Home'
+import { BrowserRouter, Routes, Route } from "react-router";
+import SignUp from './Pages/SignUp';
+
 
 function App() {
   
 
   return (
-    <>
-     <Navbar/>
-      <Dashboard/>
-     
-    </>
+    
+     <BrowserRouter>
+      <Routes>
+      <Route path="/home" element={ <Home/>} />
+      <Route path="/" element={ <Home/>} />
+       <Route path="/sign-up" element={ <SignUp/>} />
+    </Routes>
+  </BrowserRouter>
+       
   )
 }
 
