@@ -5,7 +5,7 @@ const router =  express.Router()
 
 
 router.route('/create/message').post(CreateMessage)
-router.route('/message').get(GetMessageById)
+router.route('/message/:name/:message').get(GetMessageById)
 router.route('/message/update').put(UpdateMessage)
 router.route('/message/delete').delete(DeleteMessage)
 

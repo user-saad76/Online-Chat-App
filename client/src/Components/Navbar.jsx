@@ -36,7 +36,7 @@ function Navbar() {
 
           {/* Auth Buttons */}
           <div className="d-flex gap-2">
-            <Link to ="/sign-up" className="btn btn-outline-primary px-4">
+            <Link to ="/sign-in" className="btn btn-outline-primary px-4">
               Sign In
             </Link>
             <Link to ="/sign-up" className="btn btn-primary px-4">
