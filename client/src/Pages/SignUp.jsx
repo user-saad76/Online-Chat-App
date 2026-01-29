@@ -24,8 +24,22 @@ function SignUp() {
     resolver: zodResolver(signupSchema),
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async(data) => {
     console.log("Form Data:", data);
+     try {
+      const res = await fetch("http://localhost:7000/create/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error("Failed to send user data");
+
+    } catch (err) {
+      console.error(err.message);
+    }
   };
 
   // Watch image input for preview
@@ -60,7 +74,7 @@ function SignUp() {
               <h3 className="text-center fw-bold mb-1">Employee Sign Up</h3>
               <p className="text-center text-muted mb-4">Create your account</p>
 
-              <form onSubmit={handleSubmit(onSubmit)}>
+              <form onSubmit={handleSubmit(onSubmit)} enctype="multipart/form-data">
 
                 {/* Name */}
                 <div className="mb-3">
