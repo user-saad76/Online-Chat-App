@@ -1,32 +1,13 @@
 import User from  '../Models/user.model.js' 
-//import multer from "multer";
-
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "uploads/");
-//   },
-
-//   filename: (req, file, cb) => {
-//     cb(null, Date.now() + path.extname(file.originalname));
-//     const uniqueName = `category-${Date.now()}${exis}`;
-//     cb(null,uniqueName)
-//   },
-// });
-
-
-
-
-
-
-
 
   export const CreateUser = async(req,res)=>{
-     const data =  req.body;
-      const file = req.files
-       await User.create(data)
-     console.log('user created',data);
+       const {title,isPublic} = req.body;
+       const image = req.file;
+        await User.create(image)
+    
+      console.log('image created',image);
      
-    res.json({message:' Create Message endpoint called',data})
+    res.json({message:' Create Message endpoint called',image})
 }
  export const GetUser = async(req,res)=>{
       const Qdata =  req.query;
