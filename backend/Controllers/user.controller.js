@@ -1,14 +1,27 @@
 import User from  '../Models/user.model.js' 
 
-  export const CreateUser = async(req,res)=>{
-       const {title,isPublic} = req.body;
-       const image = req.file;
-        await User.create(image)
-    
-      console.log('image created',image);
-     
-    res.json({message:' Create Message endpoint called',image})
-}
+ export const CreateUser = async (req, res) => {
+  try {
+    const data = req.body;
+
+    if (req.file) {
+      data.image = {
+        public_id: req.file.public_id,
+        secure_url: req.file.path,
+      };
+    }
+
+    const user = await User.create(data);
+    console.log("image",req.file);
+
+
+    res.json({ message: "user created", user });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
  export const GetUser = async(req,res)=>{
       const Qdata =  req.query;
       const User =  await User.find({})

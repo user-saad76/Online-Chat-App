@@ -48,10 +48,10 @@ const UserSchema = new mongoose.Schema(
     },
 
     // store image path / filename from multer
-     image: {
-      public_id:String,
-      secure_url:String
-     }
+   image: {
+        public_id: String,
+         secure_url: String
+      }
   },
   {
     timestamps: true,

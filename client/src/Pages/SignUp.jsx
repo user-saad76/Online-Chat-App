@@ -24,23 +24,36 @@ function SignUp() {
     resolver: zodResolver(signupSchema),
   });
 
-  const onSubmit = async(data) => {
-    console.log("Form Data:", data);
-     try {
-      const res = await fetch("http://localhost:7000/create/user", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+  const onSubmit = async (data) => {
+  try {
+    const formData = new FormData();
 
-      if (!res.ok) throw new Error("Failed to send user data");
+    formData.append("name", data.name);
+    formData.append("cnic", data.cnic);
+    formData.append("post", data.post);
+    formData.append("address", data.address);
+    formData.append("city", data.city);
+    formData.append("phone", data.phone);
+    formData.append("password", data.password);
 
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
+    // image file
+    formData.append("image", data.image[0]);
+
+    const res = await fetch("http://localhost:7000/create/user", {
+      method: "POST",
+      body: formData, // ❗ no headers
+    });
+
+    if (!res.ok) throw new Error("Failed");
+
+    const result = await res.json();
+    console.log(result);
+
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 
   // Watch image input for preview
   const imageFile = watch("image");
