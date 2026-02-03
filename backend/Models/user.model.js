@@ -4,40 +4,41 @@ const UserSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
       minlength: 3,
       trim: true,
     },
-
+      email: {
+      type: String,
+      unique: true,
+       required: true,
+      lowercase: true,
+      trim: true,
+     match: [/^\S+@\S+\.\S+$/, "Invalid email format"],
+      },
     cnic: {
       type: String,
-      required: true,
       unique: true,
       match: [/^\d{5}-\d{7}-\d$/, "CNIC format: 12345-1234567-1"],
     },
 
     post: {
       type: String,
-      required: true,
       minlength: 2,
     },
 
     address: {
       type: String,
-      required: true,
       minlength: 5,
     },
 
     city: {
       type: String,
-      required: true,
       minlength: 2,
     },
 
     phone: {
       type: String,
-      required: true,
-      unique: true,
+       unique: true,
       match: [/^03\d{9}$/, "Phone format: 03XXXXXXXXX"],
     },
 

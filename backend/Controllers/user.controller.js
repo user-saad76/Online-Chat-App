@@ -1,6 +1,7 @@
-import User from  '../Models/user.model.js' 
+import User from  '../Models/user.model.js'
+import bcrypt from "bcryptjs";
 
- export const CreateUser = async (req, res) => {
+ export const SignupUser = async (req, res) => {
   try {
     const data = req.body;
 
@@ -11,8 +12,13 @@ import User from  '../Models/user.model.js'
       };
     }
 
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+
+    data.password = hashedPassword;
+
     const user = await User.create(data);
-    console.log("image",req.file);
+    console.log("data in backend",data)
+
 
 
     res.json({ message: "user created", user });
@@ -22,26 +28,49 @@ import User from  '../Models/user.model.js'
   }
 };
 
- export const GetUser = async(req,res)=>{
-      const Qdata =  req.query;
-      const User =  await User.find({})
-    res.json({message:' Get Message endpoint called',User })
-} 
- export const GetUserById = async(req,res)=>{
-    const {id} = req.params;
-     const User = await User.findById(id)
-    console.log('Pdata',id);
-    res.json({message:' Get Message by id endpoint called',User})
-}
- export const UpdateUser = async(req,res)=>{
-    const {id} = req.params;
+export const SignInUser = async (req, res) => {
+  try {
+    const Qdata = req.query;
+    const User = await User.find({});
+    res.json({ message: ' Get Message endpoint called', User });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const GetUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const User = await User.findById(id);
+    console.log('Pdata', id);
+    res.json({ message: ' Get Message by id endpoint called', User });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const UpdateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
     const data = req.body;
 
-    await User.findByIdAndUpdate(id,data)
-    res.json({message:' Get Message endpoint called'})
-}
- export const DeleteUser = async(req,res)=>{
-    const {id} = req.params;
-    await User.findByIdAndDelete(id)
-    res.json({message:' Get Message endpoint called',id})
-}
+    await User.findByIdAndUpdate(id, data);
+    res.json({ message: ' Get Message endpoint called' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const DeleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await User.findByIdAndDelete(id);
+    res.json({ message: ' Get Message endpoint called', id });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+};
