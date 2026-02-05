@@ -30,9 +30,28 @@ import bcrypt from "bcryptjs";
 
 export const SignInUser = async (req, res) => {
   try {
-    const Qdata = req.query;
-    const User = await User.find({});
-    res.json({ message: ' Get Message endpoint called', User });
+   const {email,password} = req.body;
+   const user = await User.findOne({email}).select("+password");
+
+   if(!user || user.length === 0 ){
+    return res.status(404).json({
+      success:false,
+      message:'User not found',
+    })
+   }
+
+   const isMatched = await bcrypt.compare(password,user.password);
+   if(!isMatched){
+      return res.status(401).json({
+        success:false,
+        message:'Invaild password'
+      })
+   }
+
+   console.log('data',user);
+
+   res.json({ message: 'user found', user });
+   
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: error.message });

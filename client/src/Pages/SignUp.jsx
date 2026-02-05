@@ -7,7 +7,7 @@ import { useState } from "react";
 const signupSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
   email: z.string().email("Invalid email address"),
-  cnic: z.string().regex(/^\d{5}-\d{7}-\d$/, "CNIC format: 12345-1234567-1"),
+  //cnic: z.string().regex(/^\d{5}-\d{7}-\d$/, "CNIC format: 12345-1234567-1"),
   post: z.string().min(2, "Employee post is required"),
   address: z.string().min(5, "Address is required"),
   city: z.string().min(2, "City is required"),
@@ -34,7 +34,7 @@ function SignUp() {
 
       formData.append("name", data.name);
       formData.append("email", data.email);
-      formData.append("cnic", data.cnic);
+     // formData.append("cnic", data.cnic);
       formData.append("post", data.post);
       formData.append("address", data.address);
       formData.append("city", data.city);
@@ -120,21 +120,6 @@ function SignUp() {
                   />
                   <div className="invalid-feedback">
                     {errors.email?.message}
-                  </div>
-                </div>
-
-                {/* CNIC */}
-                <div className="mb-3">
-                  <label className="form-label">CNIC No</label>
-                  <input
-                    placeholder="12345-1234567-1"
-                    className={`form-control ${
-                      errors.cnic ? "is-invalid" : ""
-                    }`}
-                    {...register("cnic")}
-                  />
-                  <div className="invalid-feedback">
-                    {errors.cnic?.message}
                   </div>
                 </div>
 

@@ -4,11 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 /* Zod Schema */
 const signInSchema = z.object({
+  name: z.string().min(3, "Full name must be at least 3 characters"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  cnic: z
-    .string()
-    .regex(/^\d{5}-\d{7}-\d$/, "CNIC must be in 12345-1234567-1 format"),
 });
 
 function SignIn() {
@@ -22,20 +20,18 @@ function SignIn() {
 
   const onSubmit = async (data) => {
     try {
-      const formData = new FormData();
-      formData.append("email", data.email);
-      formData.append("password", data.password);
-      formData.append("cnic", data.cnic); // ✅ Added CNIC
+    const res = await fetch("http://localhost:7000/sign-in", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    name: data.name,
+    email: data.email,
+    password: data.password,
+  }),
+     });
 
-      const res = await fetch("http://localhost:7000/create/sign-up", {
-        method: "POST", // 👈 MUST be POST
-        body: formData,
-      });
-
-      if (!res.ok) throw new Error("Failed");
-
-      const result = await res.json();
-      console.log(result);
     } catch (err) {
       console.log(err);
     }
@@ -47,6 +43,16 @@ function SignIn() {
         <h3 className="text-center mb-4">Sign In</h3>
 
         <form onSubmit={handleSubmit(onSubmit)}>
+
+          {/* Full Name */}
+          <div className="mb-3">
+            <label className="form-label">Full Name</label>
+            <input type="text" className="form-control" {...register("name")} />
+            {errors.name && (
+              <small className="text-danger">{errors.name.message}</small>
+            )}
+          </div>
+
           {/* Email */}
           <div className="mb-3">
             <label className="form-label">Email</label>
@@ -62,15 +68,6 @@ function SignIn() {
             <input type="password" className="form-control" {...register("password")} />
             {errors.password && (
               <small className="text-danger">{errors.password.message}</small>
-            )}
-          </div>
-
-          {/* CNIC */}
-          <div className="mb-3">
-            <label className="form-label">CNIC</label>
-            <input type="text" className="form-control" {...register("cnic")} />
-            {errors.cnic && (
-              <small className="text-danger">{errors.cnic.message}</small>
             )}
           </div>
 
