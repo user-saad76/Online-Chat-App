@@ -11,7 +11,10 @@ import cors from 'cors'
 
 const port = process.env.PORT || 6000;
 connectDB().catch((e) => console.log("Error in Conection",e));
-server.use(cors())
+server.use(cors({
+    origin:"http://localhost:5173",
+    credentials:true
+}));
 //server.use(bodyParser.json())
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));

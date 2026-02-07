@@ -20,8 +20,9 @@ function SignIn() {
 
   const onSubmit = async (data) => {
     try {
-    const res = await fetch("http://localhost:7000/sign-in", {
+  const res = await fetch("http://localhost:7000/sign-in", {
   method: "POST",
+  credentials:"include",
   headers: {
     "Content-Type": "application/json",
   },
