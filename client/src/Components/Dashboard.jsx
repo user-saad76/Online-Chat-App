@@ -26,7 +26,10 @@ export default function Dashboard() {
   /* Fetch Messages */
   const fetchMessages = async () => {
     try {
-      const res = await fetch("http://localhost:7000/messages");
+      const res = await fetch("http://localhost:7000/messages",{
+      method: "GET",
+      credentials: "include", // ⭐ cookie (jwt-token) will be sent
+    });
       const data = await res.json();
       setMessages(data.messages);
     } catch (err) {
@@ -37,6 +40,7 @@ export default function Dashboard() {
   try {
     const res = await fetch(`http://localhost:7000/message/delete/${id}`, {
       method: "DELETE",
+       credentials: "include"
     });
 
     if (!res.ok) throw new Error("Failed to delete message");
@@ -53,6 +57,7 @@ const editMessage = async (id, message) => {
   try {
     await fetch(`http://localhost:7000/message/update/${id}`, {
       method: "PUT",
+       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -77,6 +82,7 @@ const editMessage = async (id, message) => {
     try {
       const res = await fetch("http://localhost:7000/create/message", {
         method: "POST",
+         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -107,7 +113,7 @@ const editMessage = async (id, message) => {
           className="chat-messages mb-3"
           style={{ height: "200px", overflowY: "auto" }}
         >
-         {messages.map((msg) => (
+         {messages?.map((msg) => (
   <div key={msg._id} className="alert alert-primary p-2">
 
     {editingId === msg._id ? (

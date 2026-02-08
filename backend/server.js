@@ -4,6 +4,7 @@ import 'dotenv/config'
 import messageRoutes from "./Routes/message.routes.js";
 import userRoutes from "./Routes/user.routes.js";
 //import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import { connectDB } from './Config/db.js';
 import cors from 'cors'
 
@@ -16,6 +17,7 @@ server.use(cors({
     credentials:true
 }));
 //server.use(bodyParser.json())
+server.use(cookieParser())
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(messageRoutes)
