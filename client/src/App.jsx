@@ -4,11 +4,13 @@ import Home from './Pages/Home'
 import { BrowserRouter, Routes, Route } from "react-router";
 import SignUp from './Pages/SignUp';
 import SignIn from './Pages/SignIn';
+import { useEffect } from 'react';
+import { useFetch } from './hooks/useFetch';
 
 
 function App() {
   
-
+   // const {data,error,loading} = useFetch('http://localhost:7000/me')
   return (
     
      <BrowserRouter>

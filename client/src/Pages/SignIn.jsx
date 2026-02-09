@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 
 /* Zod Schema */
 const signInSchema = z.object({
@@ -9,7 +10,10 @@ const signInSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
+ 
+
 function SignIn() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -31,11 +35,14 @@ function SignIn() {
     email: data.email,
     password: data.password,
   }),
+  
+
      });
 
     } catch (err) {
       console.log(err);
     }
+     navigate('/')
   };
 
   return (
