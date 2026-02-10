@@ -80,9 +80,9 @@ export const SignInUser = async (req, res) => {
 export const GetUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    const User = await User.findById(id);
+    const user = await User.findById(id);
     console.log('Pdata', id);
-    res.json({ message: ' Get Message by id endpoint called', User });
+    res.json({ message: ' Get Message by id endpoint called', user });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: error.message });
@@ -107,6 +107,21 @@ export const DeleteUser = async (req, res) => {
     const { id } = req.params;
     await User.findByIdAndDelete(id);
     res.json({ message: ' Get Message endpoint called', id });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+};
+export const getMe = async (req, res) => {
+  try {
+    const { _id } = req.params;
+
+    const data = await User.findById(_id); 
+
+    res.json({
+      message: 'Get User',
+      data,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: error.message });

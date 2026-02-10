@@ -38,11 +38,17 @@ function SignIn() {
   
 
      });
-
-    } catch (err) {
-      console.log(err);
+      if (!res.ok) {
+      alert(result.message || "You have given invalid information");
+      return;
     }
-     navigate('/')
+
+    // success
+    navigate("/");
+  } catch (err) {
+    console.log(err);
+    alert("Something went wrong");
+  }
   };
 
   return (
