@@ -113,17 +113,9 @@ export const DeleteUser = async (req, res) => {
   }
 };
 export const getMe = async (req, res) => {
-  try {
-    const { _id } = req.params;
-
-    const data = await User.findById(_id); 
-
-    res.json({
-      message: 'Get User',
-      data,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error.message });
-  }
+  res.json({
+    message: "Get User",
+    data: req.user,   // 👈 direct from middleware
+  });
 };
+
