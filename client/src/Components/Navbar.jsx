@@ -48,7 +48,7 @@ function Navbar() {
               user?(
               <>
                  <Link className="btn btn-outline-primary px-4">
-                {user.name}
+                {user.data?.name}
                </Link>
                 <Link to ="/sign-in" className="btn btn-outline-primary px-4">
                  Log out

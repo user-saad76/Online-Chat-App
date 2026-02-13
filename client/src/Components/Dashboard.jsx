@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
+import { useFetch } from "../hook/useFetch";
 
 /* Zod Schema */
 const messageSchema = z.object({
@@ -22,20 +23,24 @@ export default function Dashboard() {
   } = useForm({
     resolver: zodResolver(messageSchema),
   });
+  
+ const {Data,error,loading} = useFetch('http://localhost:7000/messages')
+ console.log("messages",Data)
+
 
   /* Fetch Messages */
-  const fetchMessages = async () => {
-    try {
-      const res = await fetch("http://localhost:7000/messages",{
-      method: "GET",
-      credentials: "include", // ⭐ cookie (jwt-token) will be sent
-    });
-      const data = await res.json();
-      setMessages(data.messages);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const fetchMessages = async () => {
+  //   try {
+  //     const res = await fetch("http://localhost:7000/messages",{
+  //     method: "GET",
+  //     credentials: "include", // ⭐ cookie (jwt-token) will be sent
+  //   });
+  //     const data = await res.json();
+  //     setMessages(data.messages);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
  const deleteMessage = async (id) => {
   try {
     const res = await fetch(`http://localhost:7000/message/delete/${id}`, {
@@ -65,7 +70,7 @@ const editMessage = async (id, message) => {
     });
 
     setEditingId(null);
-    fetchMessages();
+   // fetchMessages();
   } catch (err) {
     console.log(err);
   }
@@ -73,10 +78,10 @@ const editMessage = async (id, message) => {
 
 
 
-  /* Load messages on page load */
-  useEffect(() => {
-    fetchMessages();
-  }, []);
+  // /* Load messages on page load */
+  // useEffect(() => {
+  //   fetchMessages();
+  // }, []);
 
   const onSubmit = async (data) => {
     try {
@@ -92,7 +97,7 @@ const editMessage = async (id, message) => {
       if (!res.ok) throw new Error("Failed to send message");
 
       reset();
-      fetchMessages(); // refresh chat after sending
+      //fetchMessages(); // refresh chat after sending
     } catch (err) {
       console.error(err.message);
     }
@@ -113,7 +118,7 @@ const editMessage = async (id, message) => {
           className="chat-messages mb-3"
           style={{ height: "200px", overflowY: "auto" }}
         >
-         {messages?.map((msg) => (
+         {Data?.messages?.map((msg) => (
   <div key={msg._id} className="alert alert-primary p-2">
 
     {editingId === msg._id ? (
