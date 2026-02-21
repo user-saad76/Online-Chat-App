@@ -1,10 +1,11 @@
-import { data, Link } from "react-router";
+import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthProvider";
+
 
 function Navbar() {
   //console.log('user information',data);
 
-      const {user}= useAuth()
+      const {user,logout}= useAuth()
       console.log("user information",user);
       
   return (
@@ -44,27 +45,25 @@ function Navbar() {
           {/* Auth Buttons */}
           <div className="d-flex gap-2">
 
-          {
-              user?(
+           {user?.data ? (
               <>
-                 <Link className="btn btn-outline-primary px-4">
-                {user.data?.name}
-               </Link>
-                <Link to ="/sign-in" className="btn btn-outline-primary px-4">
-                 Log out
+                <span className="btn btn-outline-primary px-4">
+                  {user.data.name}
+                </span>
+                <button onClick={logout}  className="btn btn-outline-primary px-4">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/sign-in" className="btn btn-outline-primary px-4">
+                  Sign In
+                </Link>
+                <Link to="/sign-up" className="btn btn-primary px-4">
+                  Sign Up
                 </Link>
               </>
-              ):(
-                <>
-                  <Link to ="/sign-in" className="btn btn-outline-primary px-4">
-              Sign In
-            </Link>
-            <Link to ="/sign-up" className="btn btn-primary px-4">
-              Sign Up
-            </Link>
-                </>            
-              )
-          }
+            )}
  
           </div>
         </div>

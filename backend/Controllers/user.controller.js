@@ -118,4 +118,15 @@ export const getMe = async (req, res) => {
     data: req.user,   // 👈 direct from middleware
   });
 };
+export const logout = async (req, res) => {
+    res.cookie("jwt-token",null,{ 
+    httpOnly:true,
+    maxAge:Date.now(),
+    secure:false,
+     sameSite: "lax",
+    })
+    res.json({
+       message: 'user logged out'
+     });
+};
 

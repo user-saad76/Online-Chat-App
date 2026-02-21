@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
+import { Navigate,useNavigate} from "react-router-dom";
+import { useAuth } from "../contexts/AuthProvider";
 
 /* Zod Schema */
 const signInSchema = z.object({
@@ -13,6 +14,13 @@ const signInSchema = z.object({
  
 
 function SignIn() {
+
+    const {user,error:userError,loading:userLoading} = useAuth();
+   if(userLoading) return <p>Loading......</p>
+    if(user?.data && user?.data?.name) return <Navigate to ='/'/>
+   
+
+
   const navigate = useNavigate();
   const {
     register,

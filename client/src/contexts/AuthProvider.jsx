@@ -8,9 +8,14 @@ export const AuthContext = createContext();
 function AuthProvider({children}) {
 
     const {Data:user,error,loading} =  useFetch("http://localhost:7000/user/me");
+
+    const logout = () =>{
+       useFetch("http://localhost:7000/user/logout");
+    }
+    
  
    return(
-      <AuthContext.Provider value={{user,error,loading}}>
+      <AuthContext.Provider value={{user,error,loading,logout}}>
         {children}
       </AuthContext.Provider>
    ) 

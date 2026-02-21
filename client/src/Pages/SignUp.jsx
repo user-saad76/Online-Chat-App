@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useAuth } from "../contexts/AuthProvider";
+import { Navigate } from "react-router";
 
 /* Zod Schema */
 const signupSchema = z.object({
@@ -19,6 +21,10 @@ const signupSchema = z.object({
 function SignUp() {
   const [preview, setPreview] = useState(null);
 
+   const {user,error:userError,loading:userLoading} = useAuth();
+
+
+
   const {
     register,
     handleSubmit,
@@ -27,6 +33,10 @@ function SignUp() {
   } = useForm({
     resolver: zodResolver(signupSchema),
   });
+
+
+   if(userLoading) return <p>Loading......</p>
+   if(user && user?.name) return <Navigate to ={'/'}/>
 
   const onSubmit = async (data) => {
     try {
