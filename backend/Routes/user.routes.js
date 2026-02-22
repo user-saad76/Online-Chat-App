@@ -13,7 +13,7 @@ router.route('/user/me').get(isAuthenticated,getMe)
 router.route('/user/:id').get(GetUserById)
 router.route('/user/update/:id').put(UpdateUser)
 router.route('/user/delete/:id').delete(DeleteUser)
-router.route('/user/logout').get(logout)
+router.route('/user/logout').post(logout)
 
 
 export default router

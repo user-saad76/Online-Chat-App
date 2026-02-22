@@ -52,7 +52,8 @@ function SignIn() {
     }
 
     // success
-    navigate("/");
+    //navigate("/");
+    window.location.href = '/'
   } catch (err) {
     console.log(err);
     alert("Something went wrong");

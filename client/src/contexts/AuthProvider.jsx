@@ -1,25 +1,37 @@
-import React,{createContext} from "react";
-import { useContext } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useFetch } from "../hook/useFetch";
 
 export const AuthContext = createContext();
 
+function AuthProvider({ children }) {
 
-function AuthProvider({children}) {
+  const { Data, error, loading } = useFetch("http://localhost:7000/user/me");
+  const [user,setUser] = useState(null);
 
-    const {Data:user,error,loading} =  useFetch("http://localhost:7000/user/me");
+  useEffect(()=>{
+   if(Data)setUser(Data);
+  },[Data]);
 
-    const logout = () =>{
-       useFetch("http://localhost:7000/user/logout");
+  const logout = async () => {
+    try {
+      await fetch("http://localhost:7000/user/logout", {
+        method: "POST",
+        credentials: "include", // important if using cookies
+      });
+
+    setUser(null)
+    } catch (err) {
+      console.error("Logout failed:", err);
     }
-    
- 
-   return(
-      <AuthContext.Provider value={{user,error,loading,logout}}>
-        {children}
-      </AuthContext.Provider>
-   ) 
-}
-export default AuthProvider
+  };
 
- export const useAuth = ()=> useContext(AuthContext)
+  return (
+    <AuthContext.Provider value={{ user, error, loading, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export default AuthProvider;
+
+export const useAuth = () => useContext(AuthContext);

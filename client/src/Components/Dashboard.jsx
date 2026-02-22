@@ -52,6 +52,7 @@ export default function Dashboard() {
 
     // Remove the deleted message from state
     setMessages((prev) => prev.filter((msg) => msg._id !== id));
+     window.location.href = '/'
 
   } catch (err) {
     console.log(err);
@@ -70,6 +71,7 @@ const editMessage = async (id, message) => {
     });
 
     setEditingId(null);
+     window.location.href = '/'
    // fetchMessages();
   } catch (err) {
     console.log(err);
@@ -97,6 +99,9 @@ const editMessage = async (id, message) => {
       if (!res.ok) throw new Error("Failed to send message");
 
       reset();
+
+      window.location.href = '/'
+
       //fetchMessages(); // refresh chat after sending
     } catch (err) {
       console.error(err.message);

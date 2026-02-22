@@ -119,14 +119,15 @@ export const getMe = async (req, res) => {
   });
 };
 export const logout = async (req, res) => {
-    res.cookie("jwt-token",null,{ 
-    httpOnly:true,
-    maxAge:Date.now(),
-    secure:false,
-     sameSite: "lax",
-    })
-    res.json({
-       message: 'user logged out'
-     });
+  res.cookie("jwt-token", "", {
+    httpOnly: true,
+    expires: new Date(0),   // immediately expire
+    secure: false,          // true in production (HTTPS)
+    sameSite: "lax",
+  });
+
+  res.status(200).json({
+    message: "User logged out successfully",
+  });
 };
 
