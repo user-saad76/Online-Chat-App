@@ -47,9 +47,9 @@ function Navbar() {
 
            {user?.data ? (
               <>
-                <span className="btn btn-outline-primary px-4">
+                <Link to = "/profile-page" className="btn btn-outline-primary px-4">
                   {user.data.name}
-                </span>
+                </Link>
                 <button onClick={logout}  className="btn btn-outline-primary px-4">
                   Logout
                 </button>

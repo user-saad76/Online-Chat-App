@@ -56,7 +56,11 @@ export const SignInUser = async (req, res) => {
    const token = jwt.sign(  {
         id: user._id,
         email: user.email,
-        name:user.name
+        name:user.name,
+        image: user.image?.secure_url,
+        phone:user.phone,
+        address:user.address
+
       },process.env.JWT_SECRET,{expiresIn:'1h'})
    res.cookie("jwt-token",token,{ 
     httpOnly:true

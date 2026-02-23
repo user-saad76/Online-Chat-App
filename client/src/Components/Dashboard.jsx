@@ -105,6 +105,7 @@ const editMessage = async (id, message) => {
       //fetchMessages(); // refresh chat after sending
     } catch (err) {
       console.error(err.message);
+      alert("First you have to sign in")
     }
   };
 

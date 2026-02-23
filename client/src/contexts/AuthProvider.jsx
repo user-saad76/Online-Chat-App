@@ -20,6 +20,7 @@ function AuthProvider({ children }) {
       });
 
     setUser(null)
+     window.location.href = '/'
     } catch (err) {
       console.error("Logout failed:", err);
     }

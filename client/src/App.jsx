@@ -5,6 +5,8 @@ import { BrowserRouter, Routes, Route, data } from "react-router";
 import SignUp from './Pages/SignUp';
 import SignIn from './Pages/SignIn';
 import AuthProvider from './contexts/AuthProvider';
+import Profilepage from './Pages/Profilepage';
+import Protected from './Pages/Protected';
 
 function App() {
    
@@ -12,10 +14,11 @@ function App() {
     <AuthProvider>
      <BrowserRouter>
       <Routes>
-      <Route path="/home" element={ <Home/>} />
-      <Route path="/" element={ <Home/>} />
+      <Route path="/home" element={<Home/>} />
+      <Route path="/" element={<Home/>} />
        <Route path="/sign-up" element={ <SignUp/>} />
        <Route path="/sign-in" element={ <SignIn/>} />
+        <Route path="/profile-page" element={ <Protected><Profilepage/></Protected>} />
     </Routes>
   </BrowserRouter>
    </AuthProvider>

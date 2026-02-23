@@ -32,19 +32,17 @@ function SignIn() {
 
   const onSubmit = async (data) => {
     try {
-  const res = await fetch("http://localhost:7000/sign-in", {
-  method: "POST",
-  credentials:"include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    name: data.name,
-    email: data.email,
-    password: data.password,
-  }),
-  
-
+    const res = await fetch("http://localhost:7000/sign-in", {
+    method: "POST",
+    credentials:"include",
+     headers: {
+      "Content-Type": "application/json",
+     },
+     body: JSON.stringify({
+      name: data.name,
+      email: data.email,
+      password: data.password,
+    }),
      });
       if (!res.ok) {
       alert(result.message || "You have given invalid information");
