@@ -4,6 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useFetch } from "../hook/useFetch";
+import { useAuth } from "../contexts/AuthProvider";
 
 /* Zod Schema */
 const messageSchema = z.object({
@@ -13,6 +14,9 @@ const messageSchema = z.object({
 export default function Dashboard() {
   const [messages, setMessages] = useState([]);
   const [editingId, setEditingId] = useState(null);
+   const {user}= useAuth()
+     console.log("user message data",user);
+     
 
 
   const {
@@ -125,7 +129,7 @@ const editMessage = async (id, message) => {
           style={{ height: "200px", overflowY: "auto" }}
         >
          {Data?.messages?.map((msg) => (
-  <div key={msg._id} className="alert alert-primary p-2">
+          <div key={msg._id} className="alert alert-primary p-2">
 
     {editingId === msg._id ? (
       <>
