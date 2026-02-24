@@ -45,10 +45,11 @@ export const SignInUser = async (req, res) => {
    if(!isMatched){
       return res.status(401).json({
         success:false,
-        message:'Invaild password'
+        message:'Invaild password',
+        
       })
    }
-
+   
    console.log('data',user);
 
    //Sign a JWT Token 

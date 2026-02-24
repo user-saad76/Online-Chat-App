@@ -7,6 +7,8 @@ import SignIn from './Pages/SignIn';
 import AuthProvider from './contexts/AuthProvider';
 import Profilepage from './Pages/Profilepage';
 import Protected from './Pages/Protected';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
    
@@ -21,6 +23,7 @@ function App() {
         <Route path="/profile-page" element={ <Protected><Profilepage/></Protected>} />
     </Routes>
   </BrowserRouter>
+  <ToastContainer position="top-right" autoClose={3000} />
    </AuthProvider>
        
   )

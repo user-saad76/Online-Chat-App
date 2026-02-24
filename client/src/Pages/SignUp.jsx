@@ -3,7 +3,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthProvider";
-import { Navigate } from "react-router";
+import { Navigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 /* Zod Schema */
 const signupSchema = z.object({
@@ -59,12 +60,20 @@ function SignUp() {
         body: formData,
       });
 
-      if (!res.ok) throw new Error("Failed");
+      if (!res.ok) {
+      toast.error(result.message || "Signup failed ❌");
+      return;
+    }
+     toast.success("Account created successfully 🎉");
 
+    setTimeout(() => {
+      window.location.href = "/sign-in";
+    }, 1500);
       const result = await res.json();
       console.log(result);
     } catch (err) {
       console.log(err);
+       toast.error("Something went wrong ❌");
     }
   };
 

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Navigate,useNavigate} from "react-router-dom";
 import { useAuth } from "../contexts/AuthProvider";
+import { toast } from "react-toastify";
 
 /* Zod Schema */
 const signInSchema = z.object({
@@ -16,12 +17,8 @@ const signInSchema = z.object({
 function SignIn() {
 
     const {user,error:userError,loading:userLoading} = useAuth();
-   if(userLoading) return <p>Loading......</p>
-    if(user?.data && user?.data?.name) return <Navigate to ='/'/>
-   
-
-
-  const navigate = useNavigate();
+ 
+ // const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -29,6 +26,10 @@ function SignIn() {
   } = useForm({
     resolver: zodResolver(signInSchema),
   });
+  
+  if(userLoading) return <p>Loading......</p>
+  if(user?.data && user?.data?.name) return <Navigate to ='/'/>
+
 
   const onSubmit = async (data) => {
     try {
@@ -44,17 +45,20 @@ function SignIn() {
       password: data.password,
     }),
      });
-      if (!res.ok) {
-      alert(result.message || "You have given invalid information");
+
+     if(res.ok) {
+       // toast.success("Login successful 🎉"); // ✅ success toast
+          window.location.href = "/";
+          return;
+     }
+     if (!res.ok) {
+      toast.error(result.message || "Invalid information"); // ❌ error toast
       return;
     }
-
-    // success
-    //navigate("/");
-    window.location.href = '/'
+  
   } catch (err) {
     console.log(err);
-    alert("Something went wrong");
+    toast.error("Invalid information ❌");
   }
   };
 
