@@ -117,10 +117,24 @@ const editMessage = async (id, message) => {
     <div className="dashboard-wrapper d-flex justify-content-center align-items-center vh-100">
       <div className="chat-container card shadow p-3" style={{ width: "400px" }}>
 
-        {/* Header */}
-        <div className="chat-header mb-3 border-bottom pb-2">
-          <h5 className="mb-0">Manager</h5>
-          <small className="text-success">Online</small>
+        {/* Header with Logged-in User */}
+        <div className="chat-header mb-3 border-bottom pb-2 d-flex align-items-center">
+          {user && (
+            <>
+              <img
+                src={user?.data?.image || "https://via.placeholder.com/40"}
+                alt="profile"
+                className="rounded-circle me-2"
+                width="40"
+                height="40"
+                style={{ objectFit: "cover" }}
+              />
+              <div>
+                <h6 className="mb-0">{user?.data?.name}</h6>
+                <small className="text-success">Online</small>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Messages */}
@@ -143,6 +157,7 @@ const editMessage = async (id, message) => {
     ) : (
       <div className="d-flex justify-content-between align-items-center">
         <span>{msg.message}</span>
+       
 
         <div>
           <button
