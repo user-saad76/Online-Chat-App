@@ -51,7 +51,7 @@ const userSchema = new mongoose.Schema(
 
     image: {
        public_id: String,
-          secure_url: String
+        secure_url: String
       }
   },
   { timestamps: true }
