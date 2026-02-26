@@ -60,6 +60,9 @@ function SignUp() {
         body: formData,
       });
 
+      // ✅ pehle result parse karo
+      const result = await res.json();
+        console.log(result);
       if (!res.ok) {
       toast.error(result.message || "Signup failed ❌");
       return;
@@ -69,8 +72,6 @@ function SignUp() {
     setTimeout(() => {
       window.location.href = "/sign-in";
     }, 1500);
-      const result = await res.json();
-      console.log(result);
     } catch (err) {
       console.log(err);
        toast.error("Something went wrong ❌");
