@@ -14,9 +14,9 @@ import Admin from '../Models/admin.model.js';
       };
     }
 
-    const hashedPassword = await bcrypt.hash(data.password, 10);
+    // const hashedPassword = await bcrypt.hash(data.password, 10);
 
-    data.password = hashedPassword;
+    // data.password = hashedPassword;
 
     const admin = await Admin.create(data);
     console.log("data in backend",data)

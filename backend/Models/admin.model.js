@@ -9,6 +9,12 @@ const adminSchema = new mongoose.Schema(
       trim: true,
     },
 
+    post: {
+      type: String,
+      required: [true, "Post is required"],
+      trim: true,
+    },
+
     email: {
       type: String,
       required: [true, "Email is required"],
@@ -18,27 +24,37 @@ const adminSchema = new mongoose.Schema(
       match: [/^\S+@\S+\.\S+$/, "Please use valid email"],
     },
 
-    jobPost: {
+    address: {
       type: String,
-      required: [true, "Job post is required"],
-      trim: true,
+      required: [true, "Address is required"],
+    },
+
+    country: {
+      type: String,
+      required: [true, "Country is required"],
     },
 
     jobExperience: {
       type: String,
       required: [true, "Job experience is required"],
-      enum: ["Fresher", "1 Year", "2-3 Years", "5+ Years"],
     },
 
-    bio: {
+    password: {
       type: String,
-      required: [true, "Bio is required"],
-      minlength: [10, "Bio must be at least 10 characters"],
+      required: [true, "Password is required"],
+      minlength: 6,
     },
 
+    /* ✅ Image Object (Cloudinary / Multer Compatible) */
     image: {
-      type: String, // Cloudinary URL or file path
-      required: [true, "Profile image is required"],
+      public_id: {
+        type: String,
+        default: "",
+      },
+      secure_url: {
+        type: String,
+        default: "",
+      },
     },
   },
   {
