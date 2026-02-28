@@ -14,9 +14,9 @@ import Admin from '../Models/admin.model.js';
       };
     }
 
-    // const hashedPassword = await bcrypt.hash(data.password, 10);
+     const hashedPassword = await bcrypt.hash(data.password, 10);
 
-    // data.password = hashedPassword;
+     data.password = hashedPassword;
 
     const admin = await Admin.create(data);
     console.log("data in backend",data)
@@ -30,28 +30,29 @@ import Admin from '../Models/admin.model.js';
   }
 };
 
-// export const SignInUser = async (req, res) => {
-//   try {
-//    const {email,password} = req.body;
-//    const user = await User.findOne({email}).select("+password");
+ export const SignInAdmin = async (req, res) => {
+   try {
+   const {email,password} = req.body;
+     console.log("BODY:", req.body);
+    const admin = await Admin.findOne({email}).select("+password");
 
-//    if(!user || user.length === 0 ){
-//     return res.status(404).json({
-//       success:false,
-//       message:'User not found',
-//     })
-//    }
+   if(!admin || admin.length === 0 ){
+     return res.status(404).json({
+       success:false,
+       message:'User not found',
+     })
+    }
 
-//    const isMatched = await bcrypt.compare(password,user.password);
-//    if(!isMatched){
-//       return res.status(401).json({
-//         success:false,
-//         message:'Invaild password',
+    const isMatched = await bcrypt.compare(password,admin.password);
+    if(!isMatched){
+       return res.status(401).json({
+         success:false,
+         message:'Invaild password',
         
-//       })
-//    }
+       })
+    }
    
-//    console.log('data',user);
+    console.log('data-admin',admin);
 
 //    //Sign a JWT Token 
 
@@ -70,18 +71,16 @@ import Admin from '../Models/admin.model.js';
 //     secure:false,
 //      sameSite: "lax",
 //     })
-//     res.json({
-//        message: 'user login'
-//      });
+     res.json({
+        message: 'admin login'
+     });
     
 
-   
-   
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ error: error.message });
-//   }
-// };
+  } catch (error) {
+    console.log(error);
+     res.status(500).json({ error: error.message });
+   }
+ };
 
 // export const GetUserById = async (req, res) => {
 //   try {

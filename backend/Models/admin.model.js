@@ -4,14 +4,14 @@ const adminSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Name is required"],
+     // required: [true, "Name is required"],
       minlength: [3, "Name must be at least 3 characters"],
       trim: true,
     },
 
     post: {
       type: String,
-      required: [true, "Post is required"],
+     // required: [true, "Post is required"],
       trim: true,
     },
 
@@ -26,17 +26,17 @@ const adminSchema = new mongoose.Schema(
 
     address: {
       type: String,
-      required: [true, "Address is required"],
+     // required: [true, "Address is required"],
     },
 
     country: {
       type: String,
-      required: [true, "Country is required"],
+     // required: [true, "Country is required"],
     },
 
     jobExperience: {
       type: String,
-      required: [true, "Job experience is required"],
+      //required: [true, "Job experience is required"],
     },
 
     password: {

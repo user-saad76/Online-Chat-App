@@ -45,7 +45,7 @@ function Navbar() {
             {/* Sign In */}
             <li className="nav-item">
               <Link
-                to ="/signin"
+                to ="/sign-in"
                 className="btn btn-outline-light px-4 rounded-pill"
               >
                 Sign In
