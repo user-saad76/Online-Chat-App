@@ -26,18 +26,18 @@ function SignIn() {
   const onSubmit = async (formData) => {
     try {
 
-      // ✅ convert object to FormData
-      const sendData = new FormData();
-      sendData.append("email", formData.email);
-      sendData.append("password", formData.password);
+     const sendData = {
+       email: formData.email,
+       password: formData.password,
+       };
 
-      const res = await fetch(
-        "http://localhost:7000/admin/sign-in",
-        {
-          method: "POST",
-          body: sendData,
-        }
-      );
+     const res = await fetch("http://localhost:7000/admin/sign-in", {
+     method: "POST",
+     headers: {
+    "Content-Type": "application/json",
+    },
+     body: JSON.stringify(sendData),
+       });
 
       const response = await res.json(); // ✅ fetch needs json()
 

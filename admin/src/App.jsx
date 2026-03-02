@@ -7,13 +7,15 @@ import SignUp from './Pages/SignUp';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SignIn from './Pages/SignIn';
+import AuthAdminProvider from './contexts/AuthAdminProvider';
 
 function App() {
   
 
   return (
     <>
-      <BrowserRouter>
+    <AuthAdminProvider>
+        <BrowserRouter>
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/" element={<Home />} />
@@ -21,9 +23,9 @@ function App() {
           <Route path="/sign-in" element={<SignIn />} />
         </Routes>
       </BrowserRouter>
-
       {/* Toast container outside router is fine as long as it’s inside root fragment */}
       <ToastContainer position="top-right" autoClose={3000} />
+    </AuthAdminProvider> 
     </>
   )
 }

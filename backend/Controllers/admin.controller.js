@@ -36,7 +36,7 @@ import Admin from '../Models/admin.model.js';
      console.log("BODY:", req.body);
     const admin = await Admin.findOne({email}).select("+password");
 
-   if(!admin || admin.length === 0 ){
+   if(!admin){
      return res.status(404).json({
        success:false,
        message:'User not found',
@@ -56,21 +56,13 @@ import Admin from '../Models/admin.model.js';
 
 //    //Sign a JWT Token 
 
-//    const token = jwt.sign(  {
-//         id: user._id,
-//         email: user.email,
-//         name:user.name,
-//         image: user.image?.secure_url,
-//         phone:user.phone,
-//         address:user.address
-
-//       },process.env.JWT_SECRET,{expiresIn:'1h'})
-//    res.cookie("jwt-token",token,{ 
-//     httpOnly:true
-//     ,maxAge:3600000,
-//     secure:false,
-//      sameSite: "lax",
-//     })
+   const token = jwt.sign({ id: admin._id },process.env.JWT_SECRET,{expiresIn:'1h'})
+    res.cookie("jwt-token",token,{ 
+     httpOnly:true
+     ,maxAge:3600000,
+     secure:false,
+      sameSite: "lax",
+     })
      res.json({
         message: 'admin login'
      });
@@ -117,12 +109,12 @@ import Admin from '../Models/admin.model.js';
 //     res.status(500).json({ error: error.message });
 //   }
 // };
-// export const getMe = async (req, res) => {
-//   res.json({
-//     message: "Get User",
-//     data: req.user,   // 👈 direct from middleware
-//   });
-// };
+ export const getAdmin = async (req, res) => {
+  res.json({
+     message: "Get Admin",
+     data: req.user,   // 👈 direct from middleware
+    });
+ };
 // export const logout = async (req, res) => {
 //   res.cookie("jwt-token", "", {
 //     httpOnly: true,
