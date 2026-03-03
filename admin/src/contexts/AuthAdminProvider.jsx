@@ -19,7 +19,7 @@ function AuthAdminProvider({ children }) {
         credentials: "include", // important if using cookies
       });
 
-    setUser(null)
+    setAdmin(null)
      window.location.href = '/'
     } catch (err) {
       console.error("Logout failed:", err);

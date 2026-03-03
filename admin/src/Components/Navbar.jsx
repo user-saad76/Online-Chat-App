@@ -1,9 +1,15 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthAdminProvider";
+
 function Navbar() {
+
+  const { admin, logout } = useAuth();
+  console.log("admin information", admin);
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3">
       <div className="container">
-        
+
         {/* Brand */}
         <a className="navbar-brand fw-bold fs-4" href="#">
           MyApp
@@ -21,7 +27,7 @@ function Navbar() {
 
         {/* Navbar Content */}
         <div className="collapse navbar-collapse" id="navbarContent">
-          
+
           <ul className="navbar-nav ms-auto align-items-center gap-3">
 
             {/* Notification */}
@@ -42,25 +48,47 @@ function Navbar() {
               </a>
             </li>
 
-            {/* Sign In */}
-            <li className="nav-item">
-              <Link
-                to ="/sign-in"
-                className="btn btn-outline-light px-4 rounded-pill"
-              >
-                Sign In
-              </Link>
-            </li>
+            {/* ✅ AUTH CONDITION FIXED ONLY */}
+            {admin?.data ? (
+              <>
+                {/* Welcome Admin */}
+                <li className="nav-item text-white fw-semibold">
+                  Welcome, {admin.data.name}
+                </li>
 
-            {/* Sign Up */}
-            <li className="nav-item">
-              <Link
-                to ="/sign-up"
-                className="btn btn-primary px-4 rounded-pill shadow-sm"
-              >
-                Sign Up
-              </Link>
-            </li>
+                {/* Logout */}
+                <li className="nav-item">
+                  <button
+                    onClick={logout}
+                    className="btn btn-danger px-4 rounded-pill"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                {/* Sign In */}
+                <li className="nav-item">
+                  <Link
+                    to="/sign-in"
+                    className="btn btn-outline-light px-4 rounded-pill"
+                  >
+                    Sign In
+                  </Link>
+                </li>
+
+                {/* Sign Up */}
+                <li className="nav-item">
+                  <Link
+                    to="/sign-up"
+                    className="btn btn-primary px-4 rounded-pill shadow-sm"
+                  >
+                    Sign Up
+                  </Link>
+                </li>
+              </>
+            )}
 
           </ul>
         </div>

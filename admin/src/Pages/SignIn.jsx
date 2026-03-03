@@ -36,17 +36,20 @@ function SignIn() {
      headers: {
     "Content-Type": "application/json",
     },
+     credentials: "include", // ✅ VERY IMPORTANT
      body: JSON.stringify(sendData),
        });
 
       const response = await res.json(); // ✅ fetch needs json()
 
+       if(res.ok) {
+          window.location.href = "/";
+          return;
+     }
       if (!res.ok) {
         throw new Error(response.message || "Login failed");
       }
-
       console.log("Login Success:", response);
-
       toast.success("Admin Login Successful ✅"); // ✅ toast success
 
     } catch (error) {

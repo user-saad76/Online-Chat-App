@@ -56,7 +56,18 @@ import Admin from '../Models/admin.model.js';
 
 //    //Sign a JWT Token 
 
-   const token = jwt.sign({ id: admin._id },process.env.JWT_SECRET,{expiresIn:'1h'})
+   const token = jwt.sign( {
+        id: admin._id,
+        email: admin.email,
+        name:admin.name,
+        image: admin.image,
+        phone:admin.phone,
+        address:admin.address,
+        jobExperience:admin.jobExperience,
+        post:admin.post,
+        country:admin.country
+
+      },process.env.JWT_SECRET,{expiresIn:'1h'})
     res.cookie("jwt-token",token,{ 
      httpOnly:true
      ,maxAge:3600000,
@@ -115,16 +126,16 @@ import Admin from '../Models/admin.model.js';
      data: req.user,   // 👈 direct from middleware
     });
  };
-// export const logout = async (req, res) => {
-//   res.cookie("jwt-token", "", {
-//     httpOnly: true,
-//     expires: new Date(0),   // immediately expire
-//     secure: false,          // true in production (HTTPS)
-//     sameSite: "lax",
-//   });
+ export const logout = async (req, res) => {
+  res.cookie("jwt-token", "", {
+     httpOnly: true,
+     expires: new Date(0),   // immediately expire
+     secure: false,          // true in production (HTTPS)
+    sameSite: "lax",
+   });
 
-//   res.status(200).json({
-//     message: "User logged out successfully",
-//   });
-// };
+   res.status(200).json({
+     message: "Admin logged out successfully",
+   });
+ };
 
