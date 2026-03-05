@@ -68,7 +68,7 @@ import Admin from '../Models/admin.model.js';
         country:admin.country
 
       },process.env.JWT_SECRET,{expiresIn:'1h'})
-    res.cookie("jwt-token",token,{ 
+    res.cookie("jwt-token-admin",token,{ 
      httpOnly:true
      ,maxAge:3600000,
      secure:false,
@@ -127,7 +127,7 @@ import Admin from '../Models/admin.model.js';
     });
  };
  export const logout = async (req, res) => {
-  res.cookie("jwt-token", "", {
+  res.cookie("jwt-token-admin", "", {
      httpOnly: true,
      expires: new Date(0),   // immediately expire
      secure: false,          // true in production (HTTPS)

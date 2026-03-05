@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken";
 
 export const isAdminAuthenticated = (req, res, next) => {
-  const token = req.cookies["jwt-token"];
+  const token = req.cookies["jwt-token-admin"];
+    console.log('jwt-token-admin',token);
 
   if (!token) {
     return res.status(401).json({
-      message: "You are not authenticated",
+      message: "You are not authenticated admin",
     });
   }
 

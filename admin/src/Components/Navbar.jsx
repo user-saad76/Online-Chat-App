@@ -48,14 +48,23 @@ function Navbar() {
               </a>
             </li>
 
-            {/* ✅ AUTH CONDITION FIXED ONLY */}
+            {/* AUTH CONDITION */}
             {admin?.data ? (
               <>
                 {/* Welcome Admin */}
                 <li className="nav-item text-white fw-semibold">
                   Welcome, {admin.data.name}
                 </li>
-
+                  {/* Messages */}
+            <li className="nav-item">
+              <Link
+                to="/chats"
+                className="nav-link text-white fs-5"
+              >
+                <i className="fa-solid fa-message me-1"></i>
+                Messages
+              </Link>
+            </li>
                 {/* Logout */}
                 <li className="nav-item">
                   <button
@@ -65,6 +74,7 @@ function Navbar() {
                     Logout
                   </button>
                 </li>
+
               </>
             ) : (
               <>
