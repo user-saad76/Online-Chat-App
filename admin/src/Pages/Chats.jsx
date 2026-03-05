@@ -11,11 +11,11 @@ const messageSchema = z.object({
 });
 
 function Chats() {
-  const { user } = useAuth();
+  const { admin } = useAuth();
   const [editingId, setEditingId] = useState(null);
   const [messages, setMessages] = useState([]);
 
-  const { Data, error, loading } = useFetch("http://localhost:7000/messages");
+  const { Data, error, loading } = useFetch("http://localhost:7000/admin/messages");
 
   const {
     register,
@@ -29,7 +29,7 @@ function Chats() {
   /* Send Message */
   const onSubmit = async (data) => {
     try {
-      const res = await fetch("http://localhost:7000/create/message", {
+      const res = await fetch("http://localhost:7000/create/admin/message", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -50,7 +50,7 @@ function Chats() {
   /* Delete Message */
   const deleteMessage = async (id) => {
     try {
-      await fetch(`http://localhost:7000/message/delete/${id}`, {
+      await fetch(`http://localhost:7000/admin/message/delete/${id}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -64,7 +64,7 @@ function Chats() {
   /* Edit Message */
   const editMessage = async (id, message) => {
     try {
-      await fetch(`http://localhost:7000/message/update/${id}`, {
+      await fetch(`http://localhost:7000/admin/message/update/${id}`, {
         method: "PUT",
         credentials: "include",
         headers: {
@@ -86,17 +86,17 @@ function Chats() {
 
         {/* Header */}
         <div className="border-bottom pb-2 mb-3 d-flex align-items-center">
-          {user && (
+          {admin && (
             <>
               <img
-                src={user?.data?.image || "https://via.placeholder.com/40"}
+                src={admin?.data?.image?.secure_url || "https://via.placeholder.com/40"}
                 className="rounded-circle me-2"
                 width="40"
                 height="40"
                 alt="profile"
               />
               <div>
-                <h6 className="mb-0">{user?.data?.name}</h6>
+                <h6 className="mb-0">{admin?.data?.name}</h6>
                 <small className="text-success">Online</small>
               </div>
             </>

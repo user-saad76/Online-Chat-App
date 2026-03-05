@@ -4,6 +4,7 @@ import 'dotenv/config'
 import messageRoutes from "./Routes/message.routes.js";
 import userRoutes from "./Routes/user.routes.js";
 import adminRoutes from "./Routes/admin.routes.js";
+import AdminMessagesRoutes from "./Routes/AdminMessage.routes.js";
 //import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import { connectDB } from './Config/db.js';
@@ -24,6 +25,7 @@ server.use(express.urlencoded({ extended: true }));
 server.use(messageRoutes)
 server.use(userRoutes)
 server.use(adminRoutes)
+server.use(AdminMessagesRoutes)
 
 
 server.listen(port,()=>{
