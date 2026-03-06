@@ -9,6 +9,16 @@ import AdminMessagesRoutes from "./Routes/AdminMessage.routes.js";
 import cookieParser from 'cookie-parser';
 import { connectDB } from './Config/db.js';
 import cors from 'cors'
+import http from 'node:http'
+import { Server } from "socket.io";
+const app = http.createServer(server);
+const io = new Server(app,{
+    cors: {
+        origin:['http://localhost:5173','http://localhost:5174'],
+        method:['GET','POST'],
+        credentials:true
+    }
+});
 
 
 
@@ -27,8 +37,11 @@ server.use(userRoutes)
 server.use(adminRoutes)
 server.use(AdminMessagesRoutes)
 
+io.on("connection",()=>{
+    console.log('Hello,New user connected')
+})
 
-server.listen(port,()=>{
-    console.log(`Server is running on port ${port}`);
-    
+
+app.listen(port,()=>{
+    console.log(`Server is running on port ${port}`); 
 })
