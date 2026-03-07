@@ -10,10 +10,22 @@ import SignIn from './Pages/SignIn';
 import AuthAdminProvider from './contexts/AuthAdminProvider';
 import Chats from './Pages/Chats';
 import { io } from "socket.io-client";
+import { useEffect } from 'react';
 
-const socket = io("https://localhost:7000");
+const socket = io("http://localhost:7000");
+
 
 function App() {
+
+  useEffect(()=>{
+    socket.on('abc',(data)=>{
+      console.log(data.message);
+    })
+  },[])
+
+   const sendMessage = ()=>{
+    socket.emit('chat',{chat:'Hello from the client'})
+  }
   
 
   return (
@@ -30,7 +42,8 @@ function App() {
       </BrowserRouter>
       {/* Toast container outside router is fine as long as it’s inside root fragment */}
       <ToastContainer position="top-right" autoClose={3000} />
-    </AuthAdminProvider> 
+    </AuthAdminProvider>
+    <button onClick = {sendMessage}>Send Message</button>
     </>
   )
 }

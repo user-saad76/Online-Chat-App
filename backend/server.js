@@ -37,8 +37,17 @@ server.use(userRoutes)
 server.use(adminRoutes)
 server.use(AdminMessagesRoutes)
 
-io.on("connection",()=>{
-    console.log('Hello,New user connected')
+io.on("connection",(socket)=>{
+
+    console.log("Hello",socket.id);
+    
+    socket.emit('abc',{message:'Hello I am updated string'})
+
+    socket.on('chat',(data)=>{
+       console.log(socket.id,"send a message",data.chat);
+       
+    })
+   
 })
 
 
