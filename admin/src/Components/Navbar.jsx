@@ -30,24 +30,61 @@ function Navbar() {
 
           <ul className="navbar-nav ms-auto align-items-center gap-3">
 
-            {/* Notification */}
-            <li className="nav-item">
-              <a
-                href="#"
-                className="nav-link position-relative fs-5 text-white"
-              >
-                <i className="fa-solid fa-bell"></i>
+     {/* Notification */}
+    <li className="nav-item dropdown">
+        <a
+    href="#"
+    className="nav-link position-relative fs-5 text-white"
+    id="notificationDropdown"
+    role="button"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+  >
+    <i className="fa-solid fa-bell"></i>
 
-                {/* Badge */}
-                <span
-                  className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                  style={{ fontSize: "0.65rem" }}
-                >
-                  3
-                </span>
-              </a>
-            </li>
+    {/* Badge */}
+    <span
+      className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+      style={{ fontSize: "0.65rem" }}
+    >
+      3
+    </span>
+  </a>
 
+  {/* Dropdown */}
+  <ul
+    className="dropdown-menu dropdown-menu-end shadow"
+    aria-labelledby="notificationDropdown"
+    style={{ width: "300px" }}
+  >
+    <li className="dropdown-header fw-bold">Notifications</li>
+
+    <li>
+      <a href="#" className="dropdown-item d-flex align-items-start gap-2">
+        <img
+          src="https://i.pravatar.cc/40?img=1"
+          alt="user"
+          className="rounded-circle"
+          width="35"
+          height="35"
+        />
+        <div>
+          <div className="fw-semibold">Ali Khan</div>
+          <small className="text-muted d-block">Sent you a message</small>
+          <small className="text-secondary">2 minutes ago</small>
+        </div>
+      </a>
+    </li>
+
+    <li><hr className="dropdown-divider" /></li>
+
+      <li>
+      <a href="#" className="dropdown-item text-center fw-semibold">
+        View All Notifications
+      </a>
+         </li>
+      </ul>
+        </li>
             {/* AUTH CONDITION */}
             {admin?.data ? (
               <>

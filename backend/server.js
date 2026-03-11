@@ -41,14 +41,16 @@ io.on("connection",(socket)=>{
 
     console.log("Hello",socket.id);
     
-    socket.emit('abc',{message:'Hello I am updated string'})
+    // socket.emit('abc',{message:'Hello I am updated string'})
 
-    socket.on('chat',(data)=>{
-       console.log(socket.id,"send a message",data.chat);
+    // socket.on('chat',(data)=>{
+    //    console.log(socket.id,"send a message",data.chat);
        
-    })
+    // })
    
 })
+
+server.set("socket",io);
 
 
 app.listen(port,()=>{
