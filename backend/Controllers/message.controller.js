@@ -1,8 +1,10 @@
  import Message from  '../Models/message.model.js' 
   export const CreateMessage = async(req,res)=>{
      const data =  req.body;
-       await Message.create(data)
+       const message = await Message.create(data)
      console.log('message created',data);
+      const socket = req.app.get("socket")
+     socket.emit('new-message', message)
      
     res.json({message:' Create Message endpoint called',data})
 }

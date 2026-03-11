@@ -9,10 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import SignIn from './Pages/SignIn';
 import AuthAdminProvider from './contexts/AuthAdminProvider';
 import Chats from './Pages/Chats';
-import { io } from "socket.io-client";
 
-
-const socket = io("http://localhost:7000");
 
 
 function App() {

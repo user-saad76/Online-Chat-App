@@ -3,10 +3,10 @@ import AdminMessage from  '../Models/AdminMessages.model.js'
      const data =  req.body;
      const message =  await AdminMessage.create(data)
      console.log(' Admin message created',message);
-     const socket = req.server.get("socket")
-     socket.emit('new-message', message)
+    //  const socket = req.server.get("socket")
+    //  socket.emit('new-message', message)
      
-    res.json({message:' Create  Admin Message endpoint called',data})
+    res.json({message:' Create  Admin Message endpoint called',message})
 }
  export const GetAdminMessage = async(req,res)=>{
       const Qdata =  req.query;
