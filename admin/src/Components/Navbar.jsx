@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthAdminProvider";
 import { useEffect, useState } from "react";
 import socket from "../utlis/socket";
+import moment from 'moment'
 function Navbar() {
 
   const { admin, logout } = useAuth();
@@ -9,11 +10,18 @@ function Navbar() {
   const [notifications,setNotifications] = useState([]);
 
   useEffect(()=>{
-      socket.on('new-message',(data)=>{
-        console.log("*****",data);
-        
-        setNotifications([...notifications,data])
-      })
+       const handleNewMessage = (data) =>{
+          setNotifications((prev)=>[...prev,data])
+             console.log("******",data); 
+       };
+       socket.on("new-message",handleNewMessage);
+       return () =>{
+        socket.off("new-message",handleNewMessage);
+       }
+      // socket.on('new-message',(data)=>{
+      //   setNotifications((prev)=>[...prev,data])
+      // })
+      // socket.on("'new-message",)
   },[])
 
 
@@ -77,25 +85,26 @@ function Navbar() {
         No notifications
       </li>
     ) : (
-      notifications.map((notification, index) => (
-        <li key={index}>
-          <a href="#" className="dropdown-item d-flex align-items-start gap-2">
-            <img
-              src={notifications?.data?.image}
-              alt="user"
-              className="rounded-circle"
-              width="35"
-              height="35"
-            />
-            <div>
-              <div className="fw-semibold">{notification?.data?.name}</div>
-              <small className="text-muted d-block">
-                {notification.message}
-              </small>
-            </div>
-          </a>
-        </li>
-      ))
+    notifications.map((notification, index) => (
+  <li key={index}>
+    <a href="#" className="dropdown-item d-flex align-items-start gap-2">
+      <img
+        src={notification.user?.image?.secure_url} // 👈 user image
+        alt="user"
+        className="rounded-circle"
+        width="35"
+        height="35"
+      />
+      <div>
+        <div className="fw-semibold">{notification.user?.name}</div> 
+        <small className="text-muted d-block">{notification.message}</small>
+        <small className="text-muted d-block">
+          {moment.utc(notification.createdAt).fromNow()}
+        </small>
+      </div>
+      </a>
+     </li>
+     ))
     )}
 
     <li><hr className="dropdown-divider" /></li>

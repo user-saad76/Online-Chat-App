@@ -1,12 +1,16 @@
  import Message from  '../Models/message.model.js' 
   export const CreateMessage = async(req,res)=>{
      const data =  req.body;
+       // assume you have user id in req.user from auth middleware
+       data.user = req.user.id;
        const message = await Message.create(data)
-     console.log('message created',data);
-      const socket = req.app.get("socket")
-     socket.emit('new-message', message)
-     
-    res.json({message:' Create Message endpoint called',data})
+    // populate user info before sending to socket
+       const populatedMessage = await message.populate("user", "name image");
+
+    const socket = req.app.get("socket");
+  socket.emit('new-message', populatedMessage);
+
+  res.json({ message:'Message created', data: populatedMessage });
 }
  export const GetMessage = async(req,res)=>{
       const Qdata =  req.query;
