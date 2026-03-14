@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFetch } from "../hook/useFetch";
 import { useAuth } from "../contexts/AuthAdminProvider";
+import socket from "../utlis/socket";
 
 /* Zod Schema */
 const messageSchema = z.object({
@@ -14,6 +15,7 @@ function Chats() {
   const { admin } = useAuth();
   const [editingId, setEditingId] = useState(null);
   const [messages, setMessages] = useState([]);
+   const [notifications, setNotifications] = useState([]);
 
   const { Data, error, loading } = useFetch("http://localhost:7000/admin/messages");
 
@@ -25,6 +27,76 @@ function Chats() {
   } = useForm({
     resolver: zodResolver(messageSchema),
   });
+
+  // ⭐ Load notifications from localStorage on page load
+  useEffect(() => {
+    const storedNotifications = localStorage.getItem("notifications");
+
+    if (storedNotifications) {
+      setNotifications(JSON.parse(storedNotifications));
+    }
+  }, []); 
+
+
+   useEffect(() => {
+  
+      const handleNewMessage = (data) => {
+  
+        setNotifications((prev) => {
+  
+          const updatedNotifications = [...prev, data];
+  
+          // save in localStorage
+          localStorage.setItem(
+            "notifications",
+            JSON.stringify(updatedNotifications)
+          );
+  
+          return updatedNotifications;
+        });
+  
+        console.log("******", data);
+      };
+  
+      socket.on("new-message", handleNewMessage);
+  
+      return () => {
+        socket.off("new-message", handleNewMessage);
+      };
+  
+    }, []);
+  
+    // ✅ DELETE NOTIFICATION FUNCTION
+    const deleteNotification = async (id) => {
+      try {
+  
+        await fetch(`http://localhost:7000/message/delete/${id}`, {
+          method: "DELETE",
+          credentials: "include",
+        });
+  
+        setNotifications((prev) => {
+  
+          const updatedNotifications = prev.filter(
+            (notification) => notification._id !== id
+          );
+  
+          // update localStorage
+          localStorage.setItem(
+            "notifications",
+            JSON.stringify(updatedNotifications)
+          );
+  
+          return updatedNotifications;
+        });
+  
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+
+
 
   /* Send Message */
   const onSubmit = async (data) => {
@@ -56,6 +128,7 @@ function Chats() {
       });
 
       setMessages((prev) => prev.filter((msg) => msg._id !== id));
+      window.location.reload();
     } catch (err) {
       console.log(err);
     }
@@ -79,6 +152,8 @@ function Chats() {
       console.log(err);
     }
   };
+
+  //const allMessages = [...(Data?.messages || []), ...messages];
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
@@ -109,38 +184,57 @@ function Chats() {
           {loading && <p>Loading...</p>}
           {error && <p>Error loading messages</p>}
 
-          {Data?.messages?.map((msg) => (
-            <div key={msg._id} className="alert alert-info p-2">
+          {notifications?.map((msg) => (
+            <div key={msg._id} className="d-flex mb-2">
+              <div className="bg-light border rounded px-3 py-2 w-100">
 
-              {editingId === msg._id ? (
-                <input
-                  className="form-control"
-                  defaultValue={msg.message}
-                  autoFocus
-                  onBlur={(e) => editMessage(msg._id, e.target.value)}
-                />
-              ) : (
-                <div className="d-flex justify-content-between">
-                  <span>{msg.message}</span>
+                {/* {editingId === msg._id ? ( */}
+                  {/* <input
+                    className="form-control"
+                    defaultValue={msg.message}
+                    autoFocus
+                    onBlur={(e) => editMessage(msg._id, e.target.value)}
+                  /> */}
+                
+                  <>
+                    <div className="d-flex align-items-center mb-1">
+                      <img
+                        src={msg.user?.image?.secure_url}
+                        className="rounded-circle me-2"
+                        width="30"
+                        height="30"
+                        alt=""
+                      />
+                      <strong style={{ fontSize: "13px" }}>
+                        {msg?.user?.name}
+                      </strong>
+                    </div>
 
-                  <div>
-                    <button
-                      className="btn btn-sm btn-warning me-1"
-                      onClick={() => setEditingId(msg._id)}
-                    >
-                      Edit
-                    </button>
+                    <div style={{ fontSize: "14px" }}>
+                      {msg.message}
+                    </div>
 
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={() => deleteMessage(msg._id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              )}
+                    <div className="text-end">
+                      <small className="text-muted">
+                        {msg.createdAt
+                          ? new Date(msg.createdAt).toLocaleTimeString()
+                          : ""}
+                      </small>
+                    </div>
 
+                    <div className="text-end mt-1">
+
+                      <button
+                        className="btn btn-sm btn-danger"
+                        onClick={() => deleteNotification(msg._id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </>
+               
+
+              </div>
             </div>
           ))}
         </div>
