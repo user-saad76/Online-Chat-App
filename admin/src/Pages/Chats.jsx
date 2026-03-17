@@ -96,65 +96,6 @@ function Chats() {
     };
   
 
-
-
-  /* Send Message */
-  const onSubmit = async (data) => {
-    try {
-      const res = await fetch("http://localhost:7000/create/admin/message", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) throw new Error("Failed to send");
-
-      reset();
-      window.location.reload();
-    } catch (err) {
-      alert("Please login first");
-    }
-  };
-
-  /* Delete Message */
-  const deleteMessage = async (id) => {
-    try {
-      await fetch(`http://localhost:7000/admin/message/delete/${id}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-
-      setMessages((prev) => prev.filter((msg) => msg._id !== id));
-      window.location.reload();
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  /* Edit Message */
-  const editMessage = async (id, message) => {
-    try {
-      await fetch(`http://localhost:7000/admin/message/update/${id}`, {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message }),
-      });
-
-      setEditingId(null);
-      window.location.reload();
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  //const allMessages = [...(Data?.messages || []), ...messages];
-
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div className="card shadow p-3" style={{ width: "420px" }}>
@@ -238,26 +179,7 @@ function Chats() {
             </div>
           ))}
         </div>
-
-        {/* Send Message */}
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="input-group">
-            <input
-              className={`form-control ${errors.message ? "is-invalid" : ""}`}
-              placeholder="Type a message..."
-              {...register("message")}
-            />
-
-            <button className="btn btn-primary" type="submit">
-              Send
-            </button>
-          </div>
-
-          {errors.message && (
-            <small className="text-danger">{errors.message.message}</small>
-          )}
-        </form>
-
+      
       </div>
     </div>
   );

@@ -196,6 +196,7 @@ function Navbar() {
                   Welcome, {admin.data.name}
                 </li>
 
+                {/* Messages */}
                 <li className="nav-item">
                   <Link
                     to="/chats"
@@ -206,6 +207,18 @@ function Navbar() {
                   </Link>
                 </li>
 
+                {/* ✅ NEW: Sent Messages */}
+                <li className="nav-item">
+                  <Link
+                    to="/sent-messages"
+                    className="nav-link text-white fs-5"
+                  >
+                    <i className="fa-solid fa-paper-plane me-1"></i>
+                    Sent
+                  </Link>
+                </li>
+
+                {/* Logout */}
                 <li className="nav-item">
                   <button
                     onClick={logout}
