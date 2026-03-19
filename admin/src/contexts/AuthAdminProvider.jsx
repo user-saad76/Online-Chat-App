@@ -20,7 +20,7 @@ function AuthAdminProvider({ children }) {
       });
 
     setAdmin(null)
-     window.location.href = '/'
+     window.location.href = '/sign-in'
     } catch (err) {
       console.error("Logout failed:", err);
     }

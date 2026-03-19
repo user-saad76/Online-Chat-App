@@ -10,6 +10,7 @@ import SignIn from './Pages/SignIn';
 import AuthAdminProvider from './contexts/AuthAdminProvider';
 import Chats from './Pages/Chats';
 import SendChats from './Pages/SendChats';
+import AdminProtected from './Pages/AdminProtected';
 
 
 
@@ -21,8 +22,8 @@ function App() {
     <AuthAdminProvider>
         <BrowserRouter>
         <Routes>
-          <Route path="/home" element={<Home />} />
-          <Route path="/" element={<Home />} />
+            <Route path="/" element={<AdminProtected><Home/></AdminProtected>} />
+          <Route path="/home" element={<Home/>} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/chats" element={<Chats/>} />
