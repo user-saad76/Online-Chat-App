@@ -43,7 +43,7 @@ function SignIn() {
       const response = await res.json(); // ✅ fetch needs json()
 
        if(res.ok) {
-          window.location.href = "/";
+          window.location.href = "/home";
           return;
      }
       if (!res.ok) {

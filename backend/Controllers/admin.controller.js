@@ -123,7 +123,8 @@ import Admin from '../Models/admin.model.js';
  export const getAdmin = async (req, res) => {
   res.json({
      message: "Get Admin",
-     data: req.user,   // 👈 direct from middleware
+     data: req.user,
+       // 👈 direct from middleware
     });
  };
  export const logout = async (req, res) => {
