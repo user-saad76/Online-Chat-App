@@ -13,8 +13,8 @@ const messageSchema = z.object({
 
 function Chats() {
   const { admin } = useAuth();
-  const [editingId, setEditingId] = useState(null);
-  const [messages, setMessages] = useState([]);
+  // const [editingId, setEditingId] = useState(null);
+  // const [messages, setMessages] = useState([]);
    const [notifications, setNotifications] = useState([]);
 
   const { Data, error, loading } = useFetch("http://localhost:7000/admin/messages");

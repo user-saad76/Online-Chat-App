@@ -9,7 +9,9 @@ import Profilepage from './Pages/Profilepage';
 import Protected from './Pages/Protected';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AdminNotifications from './Pages/AdminNotifications';
 import Dashboard from './Components/Dashboard';
+
 
 function App() {
    
@@ -22,6 +24,7 @@ function App() {
        <Route path="/sign-up" element={ <SignUp/>} />
        <Route path="/sign-in" element={ <SignIn/>} />
         <Route path="/profile-page" element={ <Protected><Profilepage/></Protected>} />
+         <Route path="/admin-notifications" element={ <AdminNotifications/>} />
     </Routes>
   </BrowserRouter>
   <ToastContainer position="top-right" autoClose={3000} />

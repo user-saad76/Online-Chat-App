@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthProvider";
 
 function Navbar() {
   //console.log('user information',data);
+ 
 
       const {user,logout}= useAuth()
       console.log("user information",user);
@@ -47,6 +48,14 @@ function Navbar() {
 
            {user?.data ? (
               <>
+              {/* 🔔 Notification Icon */}
+              <Link to="/admin-notifications" className="btn position-relative">
+              <i className="bi bi-bell fs-5"></i>
+              {/* Optional badge */}
+            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                0
+              </span>
+               </Link> 
                 <Link to = "/profile-page" className="btn btn-outline-primary px-4">
                   {user.data.name}
                 </Link>
