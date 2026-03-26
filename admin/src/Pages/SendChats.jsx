@@ -93,12 +93,14 @@ function SendChats() {
 
       const newMsg = await res.json();
 
-      setMessages((prev) => [...prev, newMsg.message || newMsg.data]);
+      // ✅ Ensure proper structure (IMPORTANT FIX)
+      const messageObj = newMsg.message || newMsg.data;
 
+      setMessages((prev) => [...prev, messageObj]); // instant UI update
       reset();
+
     } catch (err) {
       console.error(err.message);
-      alert("First you have to sign in");
     }
   };
 
@@ -167,7 +169,12 @@ function SendChats() {
         </div>
 
         {/* Input */}
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault(); // ✅ FIX: stop page refresh
+            handleSubmit(onSubmit)(e);
+          }}
+        >
           <div className="input-group">
             <input
               className={`form-control ${errors.message ? "is-invalid" : ""}`}
