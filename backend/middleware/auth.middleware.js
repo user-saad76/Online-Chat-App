@@ -4,7 +4,10 @@ export const  isAuthenticated = async(req,res,next)=>{
      console.log('jwt-token',token);
      
      if(!token){
-        return res.status(401).json({message:"You are not authenticated"});
+        return res.status(401).json({message:"You are not authenticated"},
+
+        );
+          
      }
      //token verfication 
   const decoded =  await jwt.verify(token,process.env.JWT_SECRET)

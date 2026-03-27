@@ -1,36 +1,67 @@
 
-import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState, useEffect } from "react";
+import { useFetch } from "../hook/useFetch";
 import { useAuth } from "../contexts/AuthProvider";
-import { useEffect, useState } from "react";
 import socket from "../utlis/socket";
 
-function Navbar() {
-  const { user, logout } = useAuth();
+/* Zod Schema */
+const messageSchema = z.object({
+  message: z.string().min(19, "Minimum 19 characters"),
+});
 
-  const [count, setCount] = useState(0);
+function AdminNotifications() {
+  const { user } = useAuth();
+  const [notifications, setNotifications] = useState([]);
 
-  // ✅ Load notifications count on mount
+  const { Data, error, loading } = useFetch(
+    "http://localhost:7000/messages"
+  );
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(messageSchema),
+  });
+
+  // ✅ Load & clean duplicates from localStorage
   useEffect(() => {
-    const storedNotifications = localStorage.getItem("notifications");
-    if (storedNotifications) {
-      const parsed = JSON.parse(storedNotifications);
-      setCount(parsed.length);
-    }
+    const stored = JSON.parse(localStorage.getItem("notifications")) || [];
+
+    // 🔥 remove duplicates
+    const unique = stored.filter(
+      (item, index, self) =>
+        index === self.findIndex((t) => t._id === item._id)
+    );
+
+    setNotifications(unique);
+    localStorage.setItem("notifications", JSON.stringify(unique));
   }, []);
 
-  // ✅ Listen for new notifications (real-time)
+  // ✅ SOCKET LISTENER (REAL-TIME + NO DUPLICATES)
   useEffect(() => {
     const handleNewMessage = (data) => {
-      setCount((prev) => {
-        const updated = prev + 1;
+      setNotifications((prev) => {
+        // 🔥 check duplicate
+        const exists = prev.some((item) => item._id === data._id);
+        if (exists) return prev;
 
-        // also update localStorage (important sync)
-        const stored = JSON.parse(localStorage.getItem("notifications")) || [];
-        const updatedNotifications = [...stored, data];
-        localStorage.setItem("notifications", JSON.stringify(updatedNotifications));
+        const updated = [...prev, data];
+
+        localStorage.setItem("notifications", JSON.stringify(updated));
+
+        // 🔔 notify navbar (optional)
+        window.dispatchEvent(new Event("notification-updated"));
 
         return updated;
       });
+
+      console.log("******", data);
     };
 
     socket.on("new-message", handleNewMessage);
@@ -40,69 +71,109 @@ function Navbar() {
     };
   }, []);
 
+  // ✅ DELETE NOTIFICATION
+  const deleteNotification = async (id) => {
+    try {
+      await fetch(`http://localhost:7000/message/delete/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      setNotifications((prev) => {
+        const updated = prev.filter(
+          (notification) => notification._id !== id
+        );
+
+        localStorage.setItem("notifications", JSON.stringify(updated));
+
+        // 🔔 update navbar count
+        window.dispatchEvent(new Event("notification-updated"));
+
+        return updated;
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-custom fixed-top">
-      <div className="container">
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <div className="card shadow p-3" style={{ width: "420px" }}>
+        
+        {/* Header */}
+        <div className="border-bottom pb-2 mb-3 d-flex align-items-center">
+          {user && (
+            <>
+              <img
+                src={user?.data?.image || "https://via.placeholder.com/40"}
+                className="rounded-circle me-2"
+                width="40"
+                height="40"
+                alt="profile"
+              />
+              <div>
+                <h6 className="mb-0">{user?.data?.name}</h6>
+                <small className="text-success">Online</small>
+              </div>
+            </>
+          )}
+        </div>
 
-        <a className="navbar-brand fw-bold" href="/">
-          💬 ChatConnect
-        </a>
+        {/* Messages */}
+        <div style={{ height: "220px", overflowY: "auto" }} className="mb-3">
+          
+          {loading && <p>Loading...</p>}
+          {error && <p>Error loading messages</p>}
 
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#chatNavbar"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
+          {notifications.length === 0 && (
+            <p className="text-center text-muted">No notifications</p>
+          )}
 
-        <div className="collapse navbar-collapse" id="chatNavbar">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <Link className="nav-link active" to="/home">Home</Link>
-            </li>
-          </ul>
+          {notifications.map((msg) => (
+            <div key={msg._id} className="d-flex mb-2">
+              <div className="bg-light border rounded px-3 py-2 w-100">
 
-          <div className="d-flex gap-2">
+                <div className="d-flex align-items-center mb-1">
+                  <img
+                    src={msg.admin?.image?.secure_url || "https://via.placeholder.com/30"}
+                    className="rounded-circle me-2"
+                    width="30"
+                    height="30"
+                    alt=""
+                  />
+                  <strong style={{ fontSize: "13px" }}>
+                    {msg?.admin?.name || "Admin"}
+                  </strong>
+                </div>
 
-            {user?.data ? (
-              <>
-                {/* 🔔 Notification Icon */}
-                <Link to="/admin-notifications" className="btn position-relative">
-                  <i className="bi bi-bell fs-5"></i>
+                <div style={{ fontSize: "14px" }}>
+                  {msg.message}
+                </div>
 
-                  {count > 0 && (
-                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                      {count}
-                    </span>
-                  )}
-                </Link>
+                <div className="text-end">
+                  <small className="text-muted">
+                    {msg.createdAt
+                      ? new Date(msg.createdAt).toLocaleTimeString()
+                      : ""}
+                  </small>
+                </div>
 
-                <Link to="/profile-page" className="btn btn-outline-primary px-4">
-                  {user.data.name}
-                </Link>
+                <div className="text-end mt-1">
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={() => deleteNotification(msg._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
 
-                <button onClick={logout} className="btn btn-outline-primary px-4">
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/sign-in" className="btn btn-outline-primary px-4">
-                  Sign In
-                </Link>
-                <Link to="/sign-up" className="btn btn-primary px-4">
-                  Sign Up
-                </Link>
-              </>
-            )}
-
-          </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-    </nav>
+    </div>
   );
 }
 
-export default Navbar;
+export default AdminNotifications;
